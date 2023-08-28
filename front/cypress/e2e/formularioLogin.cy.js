@@ -1,6 +1,16 @@
 describe('Formulario de Login', () => {
 
   it.only("Deve acessar a pagina home", () => {
+    cy.fixture('usuarios').then(usuarios => {
+      cy.login(usuarios[0].email, usuarios[0].senha)
+      cy.visit('/home')
+      cy.url().should('include', "/home")
+      cy.getByData('titulo-boas-vindas').should('contain', 'Bem vindo de volta!')
+      cy.contains(usuarios[0].nome).should('be.visible');
+    })
+  })
+
+  it("Deve acessar a pagina home", () => {
     cy.login('neilton@alura.com', '123456')
     cy.visit('/home')
     cy.getByData('titulo-boas-vindas').should('contain', 'Bem vindo de volta!')
